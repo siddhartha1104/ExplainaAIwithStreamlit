@@ -1,0 +1,6 @@
+{   
+   "url":"https://www.ibm.com/think/cloud",
+  "session_id": "4e9877b8-7e0e-4772-a8e9-ca915973713c",
+  "api_key": "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",
+  "question":"what is this about? tell in short."
+}

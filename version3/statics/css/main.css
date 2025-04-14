@@ -1,0 +1,293 @@
+/* Static CSS file to separate styles from HTML */
+:root {
+    --transition-speed: 0.3s;
+}
+
+.dark {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --accent: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --input-bg: #1e293b;
+    --sidebar-width: 320px;
+    --message-max-width: 90%;
+    --border-color: #334155;
+    --hover-bg: #334155;
+    --card-bg: #1e293b;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+.light {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent: #0ea5e9;
+    --accent-hover: #0284c7;
+    --input-bg: #ffffff;
+    --sidebar-width: 320px;
+    --message-max-width: 90%;
+    --border-color: #e2e8f0;
+    --hover-bg: #e2e8f0;
+    --card-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: all var(--transition-speed) ease;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    transition: all var(--transition-speed) ease;
+}
+
+.main-content {
+    width: calc(100% - var(--sidebar-width));
+    transition: all var(--transition-speed) ease;
+}
+
+.input-field {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all var(--transition-speed) ease;
+    outline: none;
+}
+
+.input-field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+    transition: all var(--transition-speed) ease;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--hover-bg);
+}
+
+.user-message {
+    background-color: var(--bg-secondary);
+    border-radius: 0.75rem;
+    max-width: var(--message-max-width);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    animation: slideInRight 0.3s ease;
+}
+
+.assistant-message {
+    background-color: var(--input-bg);
+    border-radius: 0.75rem;
+    max-width: var(--message-max-width);
+    box-shadow: 0 2px 5px var(--shadow-color);
+    animation: slideInLeft 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.typing-indicator {
+    display: inline-block;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-secondary);
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 3px;
+    animation: typing 1.5s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0% { transform: translateY(0px); }
+    25% { transform: translateY(-5px); }
+    50% { transform: translateY(0px); }
+}
+
+.landing-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+}
+
+.feature-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Markdown styling */
+.markdown h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.markdown p {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.markdown ul, .markdown ol {
+    margin-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.markdown ul {
+    list-style-type: disc;
+}
+
+.markdown ol {
+    list-style-type: decimal;
+}
+
+.markdown li {
+    margin-bottom: 0.25rem;
+    line-height: 1.6;
+}
+
+.markdown code {
+    background-color: var(--hover-bg);
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+}
+
+.markdown pre {
+    background-color: var(--hover-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-family: monospace;
+}
+
+.markdown blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    color: var(--text-secondary);
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .main-content {
+        width: 100%;
+    }
+    
+    .feature-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Modal styling */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

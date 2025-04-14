@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Chatbot</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #4a6fa5;
+        --secondary-color: #336699;
+        --accent-color: #5d93d1;
+        --background-color: #f5f7fa;
+        --card-color: #ffffff;
+        --text-color: #333333;
+        --light-text: #666666;
+        --success-color: #4caf50;
+        --warning-color: #ff9800;
+        --error-color: #f44336;
+        --border-radius: 8px;
+        --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-grow: 1;
+        gap: 1.5rem;
+      }
+
+      .sidebar {
+        flex: 0 0 350px;
+        background-color: var(--card-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 1.5rem;
+        height: fit-content;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-container {
+        background-color: var(--card-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+      }
+
+      h2 {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        border-color: var(--accent-color);
+        outline: none;
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-weight: 600;
+      }
+
+      button:hover {
+        background-color: var(--secondary-color);
+      }
+
+      button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+
+      .content-source {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background-color: #f0f4f8;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+      }
+
+      .content-source h3 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .content-summary {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: var(--light-text);
+      }
+
+      .divider {
+        border-top: 1px solid #eee;
+        margin: 1.5rem 0;
+      }
+
+      .chat-box {
+        flex: 1;
+        overflow-y: auto;
+        margin-bottom: 1.5rem;
+        max-height: 400px;
+        border: 1px solid #eee;
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        background-color: #f9f9f9;
+      }
+
+      .message {
+        margin-bottom: 1rem;
+        max-width: 80%;
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius);
+        line-height: 1.5;
+      }
+
+      .user-message {
+        background-color: #e1ebfa;
+        align-self: flex-end;
+        margin-left: auto;
+        border-bottom-right-radius: 0;
+      }
+
+      .assistant-message {
+        background-color: #f0f0f0;
+        align-self: flex-start;
+        border-bottom-left-radius: 0;
+      }
+
+      .message-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+      }
+
+      .message-header {
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .user-header {
+        text-align: right;
+        color: var(--primary-color);
+      }
+
+      .assistant-header {
+        color: var(--secondary-color);
+      }
+
+      .input-container {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .input-container input {
+        flex: 1;
+      }
+
+      .status {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+      }
+
+      .success {
+        background-color: #e8f5e9;
+        color: var(--success-color);
+      }
+
+      .error {
+        background-color: #ffebee;
+        color: var(--error-color);
+      }
+
+      .warning {
+        background-color: #fff8e1;
+        color: var(--warning-color);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .secondary-button {
+        background-color: #e0e0e0;
+        color: var(--text-color);
+      }
+
+      .secondary-button:hover {
+        background-color: #d0d0d0;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      #rawContent {
+        width: 100%;
+        height: 300px;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        margin-top: 1rem;
+        font-family: monospace;
+        resize: vertical;
+        white-space: pre-wrap;
+      }
+
+      .card {
+        background-color: var(--card-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .button-with-spinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #keyInstructions {
+        margin-top: 0.5rem;
+        color: var(--light-text);
+        font-size: 0.8rem;
+      }
+
+      /* Responsive styling */
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          padding: 1rem;
+        }
+        .sidebar {
+          flex: 1 1 auto;
+          width: 100%;
+        }
+        .chat-box {
+          max-height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Content Chatbot</h1>
+    </header>
+
+    <div class="container">
+      <div class="sidebar">
+        <h2>Setup</h2>
+        <div class="form-group">
+          <label for="apiKey">Groq API Key</label>
+          <input
+            type="password"
+            id="apiKey"
+            placeholder="Enter your Groq API key"
+          />
+          <p id="keyInstructions">
+            Get your API key from
+            <a href="https://console.groq.com/keys" target="_blank"
+              >console.groq.com/keys</a
+            >
+          </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>Content Source</h2>
+        <div class="form-group">
+          <label for="urlInput">Enter URL</label>
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="YouTube, Wikipedia, or any webpage"
+          />
+        </div>
+
+        <button id="processUrlBtn">Process URL</button>
+
+        <div id="contentSource" class="content-source hidden">
+          <h3>Source Information</h3>
+          <p id="sourceInfo"></p>
+          <p id="pageTitle"></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div id="actionButtons" class="action-buttons hidden">
+          <button id="viewSummaryBtn" class="secondary-button">
+            View Summary
+          </button>
+          <button id="viewContentBtn" class="secondary-button">
+            View Content
+          </button>
+          <button id="clearChatBtn" class="secondary-button">Clear Chat</button>
+        </div>
+
+        <div id="contentViewer" class="hidden">
+          <textarea id="rawContent" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="statusMessage" class="status hidden"></div>
+
+        <div class="chat-container">
+          <h2>Chat with the Content</h2>
+          <div id="chatBox" class="chat-box"></div>
+
+          <div class="input-container">
+            <input
+              type="text"
+              id="userQuestion"
+              placeholder="Ask a question about the content..."
+              disabled
+            />
+            <button id="sendBtn" disabled>Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Constants
+      const API_BASE_URL = "http://localhost:5000/api";
+
+      // Global state
+      let sessionId = null;
+      let contentSummary = "";
+      let extractedContent = "";
+      let processingUrl = false;
+
+      // DOM Elements
+      const apiKeyInput = document.getElementById("apiKey");
+      const urlInput = document.getElementById("urlInput");
+      const processUrlBtn = document.getElementById("processUrlBtn");
+      const chatBox = document.getElementById("chatBox");
+      const userQuestionInput = document.getElementById("userQuestion");
+      const sendBtn = document.getElementById("sendBtn");
+      const statusMessage = document.getElementById("statusMessage");
+      const contentSource = document.getElementById("contentSource");
+      const sourceInfo = document.getElementById("sourceInfo");
+      const pageTitle = document.getElementById("pageTitle");
+      const actionButtons = document.getElementById("actionButtons");
+      const viewSummaryBtn = document.getElementById("viewSummaryBtn");
+      const viewContentBtn = document.getElementById("viewContentBtn");
+      const clearChatBtn = document.getElementById("clearChatBtn");
+      const contentViewer = document.getElementById("contentViewer");
+      const rawContent = document.getElementById("rawContent");
+
+      // Helper function to show status messages
+      function showStatus(message, type = "success") {
+        statusMessage.textContent = message;
+        statusMessage.className = `status ${type}`;
+        statusMessage.classList.remove("hidden");
+
+        // Auto-hide after 5 seconds for success messages
+        if (type === "success") {
+          setTimeout(() => {
+            statusMessage.classList.add("hidden");
+          }, 5000);
+        }
+      }
+
+      // Helper function to hide status
+      function hideStatus() {
+        statusMessage.classList.add("hidden");
+      }
+
+      // Helper function to add loading spinner to button
+      function setButtonLoading(button, isLoading, text) {
+        if (isLoading) {
+          button.innerHTML = `<span class="loading"></span> ${text}...`;
+          button.disabled = true;
+          button.classList.add("button-with-spinner");
+        } else {
+          button.textContent = text;
+          button.disabled = false;
+          button.classList.remove("button-with-spinner");
+        }
+      }
+
+      // Helper function to add messages to chat
+      function addMessageToChat(content, isUser = false) {
+        const messageContainer = document.createElement("div");
+        messageContainer.className = "message-container";
+
+        const header = document.createElement("div");
+        header.className = `message-header ${
+          isUser ? "user-header" : "assistant-header"
+        }`;
+        header.textContent = isUser ? "You" : "Assistant";
+
+        const message = document.createElement("div");
+        message.className = `message ${
+          isUser ? "user-message" : "assistant-message"
+        }`;
+        message.textContent = content;
+
+        messageContainer.appendChild(header);
+        messageContainer.appendChild(message);
+        chatBox.appendChild(messageContainer);
+
+        // Scroll to bottom
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      // Process URL function
+      async function processUrl() {
+        const url = urlInput.value.trim();
+        const apiKey = apiKeyInput.value.trim();
+
+        if (!url) {
+          showStatus("Please enter a URL", "error");
+          return;
+        }
+
+        if (!apiKey) {
+          showStatus("Please enter your Groq API key", "error");
+          return;
+        }
+
+        // Clear previous session data
+        sessionId = null;
+        chatBox.innerHTML = "";
+        contentSource.classList.add("hidden");
+        actionButtons.classList.add("hidden");
+        contentViewer.classList.add("hidden");
+        userQuestionInput.disabled = true;
+        sendBtn.disabled = true;
+
+        // Set button to loading state
+        setButtonLoading(processUrlBtn, true, "Processing");
+        processingUrl = true;
+
+        try {
+          showStatus("Extracting content from URL...", "warning");
+
+          const response = await fetch(`${API_BASE_URL}/process-url`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url, api_key: apiKey }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Failed to process URL");
+          }
+
+          // Store session information
+          sessionId = data.session_id;
+          contentSummary = data.summary;
+
+          // Update UI
+          sourceInfo.textContent = data.content_source;
+          pageTitle.textContent = data.page_title;
+          contentSource.classList.remove("hidden");
+          actionButtons.classList.remove("hidden");
+
+          // Enable chat
+          userQuestionInput.disabled = false;
+          sendBtn.disabled = false;
+
+          // Add welcome message to chat
+          addMessageToChat(
+            `I've analyzed the content from ${data.content_source}. Here's a summary:\n\n${data.summary}\n\nYou can now ask me questions about this content!`
+          );
+
+          hideStatus();
+          showStatus("Content processed successfully", "success");
+
+          // Fetch raw content
+          fetchRawContent();
+        } catch (error) {
+          showStatus(
+            error.message || "An error occurred while processing the URL",
+            "error"
+          );
+        } finally {
+          setButtonLoading(processUrlBtn, false, "Process URL");
+          processingUrl = false;
+        }
+      }
+
+      // Function to fetch raw content
+      async function fetchRawContent() {
+        if (!sessionId) return;
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/content/${sessionId}`);
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Failed to fetch content");
+          }
+
+          extractedContent = data.extracted_content;
+        } catch (error) {
+          console.error("Error fetching raw content:", error);
+        }
+      }
+
+      // Function to ask question
+      async function askQuestion() {
+        const question = userQuestionInput.value.trim();
+        const apiKey = apiKeyInput.value.trim();
+
+        if (!question) return;
+        if (!sessionId) {
+          showStatus("No active session. Please process a URL first.", "error");
+          return;
+        }
+
+        // Add user message to chat
+        addMessageToChat(question, true);
+
+        // Clear input
+        userQuestionInput.value = "";
+
+        // Disable input while processing
+        userQuestionInput.disabled = true;
+        sendBtn.disabled = true;
+        setButtonLoading(sendBtn, true, "Sending");
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/ask`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              session_id: sessionId,
+              question: question,
+              api_key: apiKey,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Failed to get answer");
+          }
+
+          // Add assistant response to chat
+          addMessageToChat(data.answer);
+        } catch (error) {
+          showStatus(
+            error.message || "An error occurred while getting the answer",
+            "error"
+          );
+        } finally {
+          // Re-enable input
+          userQuestionInput.disabled = false;
+          sendBtn.disabled = false;
+          setButtonLoading(sendBtn, false, "Send");
+          userQuestionInput.focus();
+        }
+      }
+
+      // Function to clear chat history
+      async function clearChat() {
+        if (!sessionId) return;
+
+        try {
+          setButtonLoading(clearChatBtn, true, "Clearing");
+
+          const response = await fetch(`${API_BASE_URL}/clear-conversation`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ session_id: sessionId }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Failed to clear conversation");
+          }
+
+          // Clear chat box and add initial message
+          chatBox.innerHTML = "";
+          addMessageToChat(
+            `I've analyzed this content. Here's a summary:\n\n${contentSummary}\n\nYou can now ask me questions about this content!`
+          );
+
+          showStatus("Conversation history cleared", "success");
+        } catch (error) {
+          showStatus(error.message, "error");
+        } finally {
+          setButtonLoading(clearChatBtn, false, "Clear Chat");
+        }
+      }
+
+      // Event Listeners
+      processUrlBtn.addEventListener("click", processUrl);
+
+      sendBtn.addEventListener("click", askQuestion);
+
+      userQuestionInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          askQuestion();
+        }
+      });
+
+      viewSummaryBtn.addEventListener("click", () => {
+        rawContent.value = contentSummary;
+        contentViewer.classList.remove("hidden");
+      });
+
+      viewContentBtn.addEventListener("click", () => {
+        rawContent.value = extractedContent;
+        contentViewer.classList.remove("hidden");
+      });
+
+      clearChatBtn.addEventListener("click", clearChat);
+
+      // Check for saved API key in localStorage
+      document.addEventListener("DOMContentLoaded", () => {
+        const savedApiKey = localStorage.getItem("groqApiKey");
+        if (savedApiKey) {
+          apiKeyInput.value = savedApiKey;
+        }
+      });
+
+      // Save API key to localStorage when it changes
+      apiKeyInput.addEventListener("change", () => {
+        localStorage.setItem("groqApiKey", apiKeyInput.value);
+      });
+    </script>
+  </body>
+</html>
