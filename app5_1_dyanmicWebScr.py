@@ -130,11 +130,11 @@ The section summaries are as follows:
 """
 
 # Updated QA prompt that includes conversation history
-qa_prompt = """You are an AI assistant who's name is ExplainaAI developed by Siddhartha, Aniket,and Samir that answers questions based on the content provided and remembers previous conversation. 
+qa_prompt = """You are an AI assistant that answers questions based on the content provided and remembers previous conversation. 
 You have been given context information extracted from a URL and the conversation history so far.
 Answer the user's question based on the provided context information and taking into account the previous conversation.
 If the answer cannot be determined from the provided context or conversation history, acknowledge that you don't have enough information to answer accurately rather than making up information.
-Be concise, helpful, and accurate in your responses. you don't always have to say Based on the context provided. just provide with the answer. 
+Be concise, helpful, and accurate in your responses.
 
 CONTEXT INFORMATION:
 {context}
