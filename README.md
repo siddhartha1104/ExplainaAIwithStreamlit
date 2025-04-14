@@ -37,20 +37,3 @@ ExplainaAI is a smart Streamlit-based chatbot that extracts and summarizes conte
 
 - Install Python 3.11 on your system
 
-### 📂 Steps to Run This App
-
-```bash
-# Step 1: Install Python 3.11 (if not already installed)
-
-# Step 2: Create a virtual environment using conda or venv
-conda create -p venv python=3.11 -y
-
-# Step 3: Activate the environment
-conda activate ./venv
-
-# Step 4: Install required Python packages
-pip install -r requirements.txt
-
-# Step 5: Run the Streamlit app
-streamlit run app6.py
-```
