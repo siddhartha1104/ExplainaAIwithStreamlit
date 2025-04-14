@@ -1,8 +1,8 @@
-# 🌐 URL2Sense
+# 🌐 ExplainaAI
 
 **Summarize and Understand Any URL Instantly**
 
-URL2Sense is a smart Streamlit-based chatbot that extracts and summarizes content from any YouTube video, website, or Wikipedia URL. It then allows you to ask questions based on the summarized content. This app leverages the power of **Groq's `llama3-70b-8192`** model for high-quality summarization and Q&A.
+ExplainaAI is a smart Streamlit-based chatbot that extracts and summarizes content from any YouTube video, website, or Wikipedia URL. It then allows you to ask questions based on the summarized content. This app leverages the power of **Groq's `llama3-70b-8192`** model for high-quality summarization and Q&A.
 
 ---
 
